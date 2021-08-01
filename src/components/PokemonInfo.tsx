@@ -1,22 +1,20 @@
-import { IPokemon } from "../interfaces";
+import { useContext } from "react";
+import PokemonContext from "../store/PokemonContext";
 
-interface Props {
-  pokemon: IPokemon;
-}
-
-const PokemonInfo: React.FC<Props> = ({ pokemon }) => {
-  return (
+const PokemonInfo: React.FC = () => {
+  const { selectedItem } = useContext(PokemonContext);
+  return selectedItem ? (
     <>
-      <h1>{pokemon!.name}</h1>
+      <h1>{selectedItem!.name}</h1>
       <ul>
-        {pokemon.stats.map((stat, i) => (
+        {selectedItem!.stats.map((stat, i) => (
           <li key={i}>
             {stat.stat.name} - {stat.base_stat}
           </li>
         ))}
       </ul>
     </>
-  );
+  ) : null;
 };
 
 export default PokemonInfo;

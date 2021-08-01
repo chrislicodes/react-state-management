@@ -1,19 +1,16 @@
 import React from "react";
-import { IPokemon } from "../interfaces";
 import styled from "styled-components";
 import PokemonRow from "./PokemonRow";
-
-interface Props {
-  pokemon: IPokemon[];
-  onClick: (pokemon: IPokemon) => void;
-}
+import { useContext } from "react";
+import PokemonContext from "../store/PokemonContext";
 
 const TableHeader = styled.th`
   font-size: 20px;
   text-align: left;
 `;
 
-const PokemonTable: React.FC<Props> = ({ pokemon, onClick }) => {
+const PokemonTable: React.FC = () => {
+  const { filteredPokemon, setSelectedItem } = useContext(PokemonContext);
   return (
     <table>
       <thead>
@@ -26,12 +23,12 @@ const PokemonTable: React.FC<Props> = ({ pokemon, onClick }) => {
         </tr>
       </thead>
       <tbody>
-        {(pokemon.length &&
-          pokemon.map((pokemon) => (
+        {(filteredPokemon!.length &&
+          filteredPokemon!.map((pokemon) => (
             <PokemonRow
               key={pokemon.name}
               pokemon={pokemon}
-              onClick={() => onClick(pokemon)}
+              onClick={() => setSelectedItem(pokemon)}
             />
           ))) || (
           <tr>

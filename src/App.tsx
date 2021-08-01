@@ -5,6 +5,7 @@ import { IPokemon } from "./interfaces";
 import PokemonInfo from "./components/PokemonInfo";
 import PokemonFilter from "./components/PokemonFilter";
 import PokemonTable from "./components/PokemonTable";
+import PokemonContext from "./store/PokemonContext";
 
 const Layout = styled.div`
   max-width: 860px;
@@ -35,26 +36,25 @@ const App: React.FC = () => {
   const [pokemon, setPokemon] = useState<IPokemon[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredPokemon, setFilteredPokemon] = useState<IPokemon[]>([]);
-
   const [selectedItem, setSelectedItem] = useState<IPokemon | null>(null);
 
   useEffect(() => {
     (async function fetchPokemonData() {
       try {
         const pokemonList = await axios.get(
-          "https://pokeapi.co/api/v2/pokemon?limit=151"
+          "https://pokeapi.co/api/v2/pokemon?limit=500"
         );
 
         const fetchURLs = pokemonList.data.results.map(
           (pokemon: any) => pokemon.url
         );
 
-        const fullPokemonData: any[] = [];
-
-        for await (const url of fetchURLs) {
-          const data = await axios.get(url);
-          fullPokemonData.push(data.data);
-        }
+        const fullPokemonData: IPokemon[] = await Promise.all(
+          fetchURLs.map(async (url: string) => {
+            const data = await axios.get(url);
+            return data.data;
+          })
+        );
 
         setPokemon(fullPokemonData);
       } catch (err) {
@@ -72,22 +72,31 @@ const App: React.FC = () => {
   }, [pokemon, searchTerm]);
 
   return (
-    <Layout>
-      <Header>
-        <Heading>Pokemon Search</Heading>
-        <PokemonFilter
-          placeholder="Search for a pokemon name..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </Header>
-      <Content>
-        <Left>
-          <PokemonTable pokemon={filteredPokemon} onClick={setSelectedItem} />
-        </Left>
-        <Right>{selectedItem && <PokemonInfo pokemon={selectedItem} />}</Right>
-      </Content>
-    </Layout>
+    <PokemonContext.Provider
+      value={{
+        searchTerm,
+        filteredPokemon,
+        selectedItem,
+        setSearchTerm,
+        setSelectedItem,
+        setFilteredPokemon,
+      }}
+    >
+      <Layout>
+        <Header>
+          <Heading>Pokemon Search</Heading>
+          <PokemonFilter placeholder="Search for a pokemon name..." />
+        </Header>
+        <Content>
+          <Left>
+            <PokemonTable />
+          </Left>
+          <Right>
+            <PokemonInfo />
+          </Right>
+        </Content>
+      </Layout>
+    </PokemonContext.Provider>
   );
 };
 
