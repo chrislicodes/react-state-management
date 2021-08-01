@@ -42,19 +42,20 @@ const App: React.FC = () => {
     (async function fetchPokemonData() {
       try {
         const pokemonList = await axios.get(
-          "https://pokeapi.co/api/v2/pokemon?limit=151"
+          "https://pokeapi.co/api/v2/pokemon?limit=500"
         );
 
         const fetchURLs = pokemonList.data.results.map(
           (pokemon: any) => pokemon.url
         );
 
-        const fullPokemonData: any[] = [];
-
-        for await (const url of fetchURLs) {
-          const data = await axios.get(url);
-          fullPokemonData.push(data.data);
-        }
+        // https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
+        const fullPokemonData: IPokemon[] = await Promise.all(
+          fetchURLs.map(async (url: string) => {
+            const data = await axios.get(url);
+            return data.data;
+          })
+        );
 
         setPokemon(fullPokemonData);
       } catch (err) {
