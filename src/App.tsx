@@ -2,8 +2,9 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { IPokemon } from "./interfaces";
-import PokemonRow from "./components/PokemonRow";
 import PokemonInfo from "./components/PokemonInfo";
+import PokemonFilter from "./components/PokemonFilter";
+import PokemonTable from "./components/PokemonTable";
 
 const Layout = styled.div`
   max-width: 860px;
@@ -28,16 +29,6 @@ const Right = styled.div``;
 
 const Heading = styled.h1`
   align-self: center;
-`;
-
-const TableHeader = styled.th`
-  font-size: 20px;
-  text-align: left;
-`;
-
-const SearchInput = styled.input`
-  outline: none;
-  height: 25px;
 `;
 
 const App: React.FC = () => {
@@ -84,7 +75,7 @@ const App: React.FC = () => {
     <Layout>
       <Header>
         <Heading>Pokemon Search</Heading>
-        <SearchInput
+        <PokemonFilter
           placeholder="Search for a pokemon name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -92,31 +83,7 @@ const App: React.FC = () => {
       </Header>
       <Content>
         <Left>
-          <table>
-            <thead>
-              <tr>
-                <TableHeader>Latest Index</TableHeader>
-                <TableHeader>Name</TableHeader>
-                <TableHeader>Type</TableHeader>
-                <TableHeader>Sprite</TableHeader>
-                <TableHeader>More Info</TableHeader>
-              </tr>
-            </thead>
-            <tbody>
-              {(filteredPokemon.length &&
-                filteredPokemon.map((pokemon) => (
-                  <PokemonRow
-                    key={pokemon.name}
-                    pokemon={pokemon}
-                    onClick={() => setSelectedItem(pokemon)}
-                  />
-                ))) || (
-                <tr>
-                  <td>Loading..</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+          <PokemonTable pokemon={filteredPokemon} onClick={setSelectedItem} />
         </Left>
         <Right>{selectedItem && <PokemonInfo pokemon={selectedItem} />}</Right>
       </Content>
