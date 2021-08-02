@@ -2,12 +2,15 @@ import { useContext } from "react";
 import PokemonContext from "../store/PokemonContext";
 
 const PokemonInfo: React.FC = () => {
-  const { selectedItem } = useContext(PokemonContext);
-  return selectedItem ? (
+  const {
+    state: { selectedPokemon },
+  } = useContext(PokemonContext);
+
+  return selectedPokemon ? (
     <>
-      <h1>{selectedItem!.name}</h1>
+      <h1>{selectedPokemon!.name}</h1>
       <ul>
-        {selectedItem!.stats.map((stat, i) => (
+        {selectedPokemon.stats.map((stat, i) => (
           <li key={i}>
             {stat.stat.name} - {stat.base_stat}
           </li>

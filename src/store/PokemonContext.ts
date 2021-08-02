@@ -1,22 +1,14 @@
 import React from "react";
-import { IPokemon } from "../interfaces";
+import { PokemonState, initialState } from "./pokemonReducer";
 
 interface IPokemonContext {
-  searchTerm: string;
-  filteredPokemon: IPokemon[] | null;
-  selectedItem: IPokemon | null;
-  setSearchTerm: (term: string) => void;
-  setSelectedItem: (pokemon: IPokemon) => void;
-  setFilteredPokemon: (pokemon: IPokemon[]) => void;
+  state: PokemonState;
+  dispatch: any; //add proper typings
 }
 
 const PokemonContext = React.createContext<IPokemonContext>({
-  searchTerm: "",
-  filteredPokemon: null,
-  selectedItem: null,
-  setSearchTerm: (term: string) => {},
-  setSelectedItem: (pokemon: IPokemon) => {},
-  setFilteredPokemon: (pokemon: IPokemon[]) => {},
+  state: initialState,
+  dispatch: () => {},
 });
 
 export default PokemonContext;

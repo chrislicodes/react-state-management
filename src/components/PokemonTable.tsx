@@ -3,6 +3,8 @@ import styled from "styled-components";
 import PokemonRow from "./PokemonRow";
 import { useContext } from "react";
 import PokemonContext from "../store/PokemonContext";
+import { IPokemon } from "../interfaces";
+import { ActionType } from "../store/pokemonReducer";
 
 const TableHeader = styled.th`
   font-size: 20px;
@@ -10,7 +12,10 @@ const TableHeader = styled.th`
 `;
 
 const PokemonTable: React.FC = () => {
-  const { filteredPokemon, setSelectedItem } = useContext(PokemonContext);
+  const {
+    state: { pokemon, filter },
+    dispatch,
+  } = useContext(PokemonContext);
   return (
     <table>
       <thead>
@@ -23,14 +28,21 @@ const PokemonTable: React.FC = () => {
         </tr>
       </thead>
       <tbody>
-        {(filteredPokemon!.length &&
-          filteredPokemon!.map((pokemon) => (
-            <PokemonRow
-              key={pokemon.name}
-              pokemon={pokemon}
-              onClick={() => setSelectedItem(pokemon)}
-            />
-          ))) || (
+        {(pokemon.length > 0 &&
+          pokemon
+            .filter((pokemon: IPokemon) => pokemon.name.includes(filter))
+            .map((pokemon: IPokemon) => (
+              <PokemonRow
+                key={pokemon.name}
+                pokemon={pokemon}
+                onClick={() =>
+                  dispatch({
+                    type: ActionType.SET_SELECTED_POKEMON,
+                    payload: pokemon,
+                  })
+                }
+              />
+            ))) || (
           <tr>
             <td>Loading..</td>
           </tr>

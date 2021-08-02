@@ -1,11 +1,16 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
 import { IPokemon } from "./interfaces";
 import PokemonInfo from "./components/PokemonInfo";
 import PokemonFilter from "./components/PokemonFilter";
 import PokemonTable from "./components/PokemonTable";
 import PokemonContext from "./store/PokemonContext";
+import {
+  ActionType,
+  pokemonReducer,
+  initialState,
+} from "./store/pokemonReducer";
 
 const Layout = styled.div`
   max-width: 860px;
@@ -33,10 +38,7 @@ const Heading = styled.h1`
 `;
 
 const App: React.FC = () => {
-  const [pokemon, setPokemon] = useState<IPokemon[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredPokemon, setFilteredPokemon] = useState<IPokemon[]>([]);
-  const [selectedItem, setSelectedItem] = useState<IPokemon | null>(null);
+  const [state, dispatch] = useReducer(pokemonReducer, initialState);
 
   useEffect(() => {
     (async function fetchPokemonData() {
@@ -56,30 +58,21 @@ const App: React.FC = () => {
           })
         );
 
-        setPokemon(fullPokemonData);
+        dispatch({
+          type: ActionType.SET_POKEMON_LIST,
+          payload: fullPokemonData,
+        });
       } catch (err) {
         console.log(err);
       }
     })();
   }, []);
 
-  useEffect(() => {
-    const filteredPokemon = [...pokemon].filter((pokemon: IPokemon) =>
-      pokemon.name.includes(searchTerm.toLowerCase())
-    );
-
-    setFilteredPokemon(filteredPokemon);
-  }, [pokemon, searchTerm]);
-
   return (
     <PokemonContext.Provider
       value={{
-        searchTerm,
-        filteredPokemon,
-        selectedItem,
-        setSearchTerm,
-        setSelectedItem,
-        setFilteredPokemon,
+        state,
+        dispatch,
       }}
     >
       <Layout>

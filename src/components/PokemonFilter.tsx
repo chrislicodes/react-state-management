@@ -2,6 +2,7 @@ import React from "react";
 import { useContext } from "react";
 import styled from "styled-components";
 import PokemonContext from "../store/PokemonContext";
+import { ActionType } from "../store/pokemonReducer";
 
 interface Props {
   placeholder: string;
@@ -13,12 +14,17 @@ const SearchInput = styled.input`
 `;
 
 const PokemonFilter: React.FC<Props> = ({ placeholder }) => {
-  const { searchTerm, setSearchTerm } = useContext(PokemonContext);
+  const {
+    state: { filter },
+    dispatch,
+  } = useContext(PokemonContext);
 
   return (
     <SearchInput
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
+      value={filter}
+      onChange={(e) =>
+        dispatch({ type: ActionType.SET_FILTER, payload: e.target.value })
+      }
       placeholder={placeholder}
     />
   );
