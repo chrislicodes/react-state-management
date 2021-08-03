@@ -4,7 +4,7 @@ import { ActionType } from "../action-types";
 import { Action } from "../actions";
 import { IPokemon } from "../../api";
 
-export const fetchPokemon = (limit = 500) => {
+export const fetchPokemon = (limit = 50) => {
   return async (dispatch: Dispatch<Action>) => {
     dispatch({
       type: ActionType.FETCH_POKEMON,
@@ -36,5 +36,23 @@ export const fetchPokemon = (limit = 500) => {
         payload: err.message,
       });
     }
+  };
+};
+
+export const setFilter = (name: string) => {
+  return async (dispatch: Dispatch<Action>) => {
+    dispatch({
+      type: ActionType.SET_FILTER,
+      payload: name,
+    });
+  };
+};
+
+export const setSelectedPokemon = (pokemon: IPokemon) => {
+  return async (dispatch: Dispatch<Action>) => {
+    dispatch({
+      type: ActionType.SET_SELECTED_POKEMON,
+      payload: pokemon,
+    });
   };
 };

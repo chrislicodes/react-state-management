@@ -1,6 +1,5 @@
 import { Action } from "../actions";
 import { ActionType } from "../action-types";
-
 import { IPokemon } from "../../api";
 
 interface PokemonState {

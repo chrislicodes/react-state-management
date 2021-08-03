@@ -12,14 +12,14 @@ const TableHeader = styled.th`
 `;
 
 const PokemonTable: React.FC = () => {
-  const { fetchPokemon } = useActions();
+  const { fetchPokemon, setSelectedPokemon } = useActions();
   const { pokemon, error, loading, filter } = useTypedSelector(
     (state) => state.pokemon
   );
 
   useEffect(() => {
-    fetchPokemon(1);
-  }, [fetchPokemon]);
+    fetchPokemon();
+  }, []);
 
   return (
     <table>
@@ -33,20 +33,15 @@ const PokemonTable: React.FC = () => {
         </tr>
       </thead>
       <tbody>
-        {(pokemon.length > 0 &&
+        {(!loading &&
+          !error &&
           pokemon
             .filter((pokemon: IPokemon) => pokemon.name.includes(filter))
             .map((pokemon: IPokemon) => (
               <PokemonRow
                 key={pokemon.name}
                 pokemon={pokemon}
-                onClick={
-                  () => {}
-                  // dispatch({
-                  //   type: ActionType.SET_SELECTED_POKEMON,
-                  //   payload: pokemon,
-                  // })
-                }
+                onClick={() => setSelectedPokemon(pokemon)}
               />
             ))) || (
           <tr>

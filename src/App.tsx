@@ -38,13 +38,15 @@ const App: React.FC = () => {
       <Layout>
         <Header>
           <Heading>Pokemon Search</Heading>
-          {/* <PokemonFilter placeholder="Search for a pokemon name..." /> */}
+          <PokemonFilter placeholder="Search for a pokemon name..." />
         </Header>
         <Content>
           <Left>
             <PokemonTable />
           </Left>
-          <Right>{/* <PokemonInfo /> */}</Right>
+          <Right>
+            <PokemonInfo />
+          </Right>
         </Content>
       </Layout>
     </Provider>
