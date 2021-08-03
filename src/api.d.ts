@@ -1,5 +1,4 @@
 //JSON to Interface Extension
-
 export interface IPokemon {
   abilities: Ability2[];
   base_experience: number;
