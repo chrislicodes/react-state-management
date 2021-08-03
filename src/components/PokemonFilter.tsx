@@ -1,8 +1,7 @@
 import React from "react";
 import { useContext } from "react";
 import styled from "styled-components";
-import PokemonContext from "../store/PokemonContext";
-import { ActionType } from "../store/pokemonReducer";
+import { PokemonContext, actionCreators } from "../store";
 
 interface Props {
   placeholder: string;
@@ -22,9 +21,7 @@ const PokemonFilter: React.FC<Props> = ({ placeholder }) => {
   return (
     <SearchInput
       value={filter}
-      onChange={(e) =>
-        dispatch({ type: ActionType.SET_FILTER, payload: e.target.value })
-      }
+      onChange={(e) => actionCreators.setFilter(dispatch, e.target.value)}
       placeholder={placeholder}
     />
   );

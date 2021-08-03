@@ -1,16 +1,10 @@
 import styled from "styled-components";
 import { useEffect, useReducer } from "react";
-import axios from "axios";
-import { IPokemon } from "./api";
 import PokemonInfo from "./components/PokemonInfo";
 import PokemonFilter from "./components/PokemonFilter";
 import PokemonTable from "./components/PokemonTable";
-import PokemonContext from "./store/PokemonContext";
-import {
-  ActionType,
-  pokemonReducer,
-  initialState,
-} from "./store/pokemonReducer";
+import { PokemonContext } from "./store";
+import { actionCreators, pokemonReducer, initialState } from "./store";
 
 const Layout = styled.div`
   max-width: 860px;
@@ -41,31 +35,7 @@ const App: React.FC = () => {
   const [state, dispatch] = useReducer(pokemonReducer, initialState);
 
   useEffect(() => {
-    (async function fetchPokemonData() {
-      try {
-        const pokemonList = await axios.get(
-          "https://pokeapi.co/api/v2/pokemon?limit=503"
-        );
-
-        const fetchURLs = pokemonList.data.results.map(
-          (pokemon: any) => pokemon.url
-        );
-
-        const fullPokemonData: IPokemon[] = await Promise.all(
-          fetchURLs.map(async (url: string) => {
-            const data = await axios.get(url);
-            return data.data;
-          })
-        );
-
-        dispatch({
-          type: ActionType.SET_POKEMON_LIST,
-          payload: fullPokemonData,
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    })();
+    actionCreators.fetchPokemon(dispatch);
   }, []);
 
   return (

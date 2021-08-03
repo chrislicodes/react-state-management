@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import PokemonRow from "./PokemonRow";
 import { useContext } from "react";
-import PokemonContext from "../store/PokemonContext";
+import { PokemonContext } from "../store";
 import { IPokemon } from "../api";
-import { ActionType } from "../store/pokemonReducer";
+import { actionCreators } from "../store";
 
 const TableHeader = styled.th`
   font-size: 20px;
@@ -36,10 +36,7 @@ const PokemonTable: React.FC = () => {
                 key={pokemon.name}
                 pokemon={pokemon}
                 onClick={() =>
-                  dispatch({
-                    type: ActionType.SET_SELECTED_POKEMON,
-                    payload: pokemon,
-                  })
+                  actionCreators.setSelectedPokemon(dispatch, pokemon)
                 }
               />
             ))) || (
