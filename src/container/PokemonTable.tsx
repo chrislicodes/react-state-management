@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import PokemonRow from "./PokemonRow";
-import { useContext } from "react";
-import PokemonContext from "../store/PokemonContext";
+import PokemonRow from "../components/PokemonRow";
 import { IPokemon } from "../api";
-import { ActionType } from "../store/pokemonReducer";
+
+import { useTypedSelector } from "../hooks/useTypedSelector";
+import { useActions } from "../hooks/useActions";
 
 const TableHeader = styled.th`
   font-size: 20px;
@@ -12,10 +12,15 @@ const TableHeader = styled.th`
 `;
 
 const PokemonTable: React.FC = () => {
-  const {
-    state: { pokemon, filter },
-    dispatch,
-  } = useContext(PokemonContext);
+  const { fetchPokemon } = useActions();
+  const { pokemon, error, loading, filter } = useTypedSelector(
+    (state) => state.pokemon
+  );
+
+  useEffect(() => {
+    fetchPokemon(1);
+  }, [fetchPokemon]);
+
   return (
     <table>
       <thead>
@@ -35,11 +40,12 @@ const PokemonTable: React.FC = () => {
               <PokemonRow
                 key={pokemon.name}
                 pokemon={pokemon}
-                onClick={() =>
-                  dispatch({
-                    type: ActionType.SET_SELECTED_POKEMON,
-                    payload: pokemon,
-                  })
+                onClick={
+                  () => {}
+                  // dispatch({
+                  //   type: ActionType.SET_SELECTED_POKEMON,
+                  //   payload: pokemon,
+                  // })
                 }
               />
             ))) || (
