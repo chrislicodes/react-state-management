@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PokemonRow from "./PokemonRow";
 import { useContext } from "react";
 import PokemonContext from "../store/PokemonContext";
-import { IPokemon } from "../interfaces";
+import { IPokemon } from "../api";
 import { ActionType } from "../store/pokemonReducer";
 
 const TableHeader = styled.th`

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useReducer } from "react";
 import axios from "axios";
-import { IPokemon } from "./interfaces";
+import { IPokemon } from "./api";
 import PokemonInfo from "./components/PokemonInfo";
 import PokemonFilter from "./components/PokemonFilter";
 import PokemonTable from "./components/PokemonTable";
@@ -44,7 +44,7 @@ const App: React.FC = () => {
     (async function fetchPokemonData() {
       try {
         const pokemonList = await axios.get(
-          "https://pokeapi.co/api/v2/pokemon?limit=500"
+          "https://pokeapi.co/api/v2/pokemon?limit=503"
         );
 
         const fetchURLs = pokemonList.data.results.map(

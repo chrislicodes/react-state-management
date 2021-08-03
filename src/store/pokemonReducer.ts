@@ -1,4 +1,4 @@
-import { IPokemon } from "../interfaces";
+import { IPokemon } from "../api";
 
 export interface PokemonState {
   filter: string;
@@ -27,23 +27,26 @@ interface SetSelectedPokemonAction {
   payload: IPokemon;
 }
 
-type Action = SetFilterAction | SetPokemonListAction | SetSelectedPokemonAction;
+export type Action =
+  | SetFilterAction
+  | SetPokemonListAction
+  | SetSelectedPokemonAction;
 
 export const pokemonReducer = (state: PokemonState, action: Action) => {
   switch (action.type) {
-    case "SET_FILTER":
+    case ActionType.SET_FILTER:
       return {
         ...state,
         filter: action.payload,
       };
 
-    case "SET_POKEMON_LIST":
+    case ActionType.SET_POKEMON_LIST:
       return {
         ...state,
         pokemon: action.payload,
       };
 
-    case "SET_SELECTED_POKEMON":
+    case ActionType.SET_SELECTED_POKEMON:
       return {
         ...state,
         selectedPokemon: action.payload,
@@ -54,7 +57,7 @@ export const pokemonReducer = (state: PokemonState, action: Action) => {
   }
 };
 
-export const initialState = {
+export const initialState: PokemonState = {
   filter: "",
   pokemon: [],
   selectedPokemon: null,

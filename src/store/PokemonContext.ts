@@ -1,9 +1,9 @@
-import React from "react";
-import { PokemonState, initialState } from "./pokemonReducer";
+import React, { Dispatch } from "react";
+import { PokemonState, initialState, Action } from "./pokemonReducer";
 
 interface IPokemonContext {
   state: PokemonState;
-  dispatch: any; //add proper typings
+  dispatch: Dispatch<Action>;
 }
 
 const PokemonContext = React.createContext<IPokemonContext>({
