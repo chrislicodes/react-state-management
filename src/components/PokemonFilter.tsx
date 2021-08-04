@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { useActions } from "../hooks/useActions";
+import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../hooks/useTypedSelector";
+import { setFilter } from "../store/action-creators";
 interface Props {
   placeholder: string;
 }
@@ -12,12 +13,12 @@ const SearchInput = styled.input`
 `;
 
 const PokemonFilter: React.FC<Props> = ({ placeholder }) => {
-  const { setFilter } = useActions();
+  const dispatch = useDispatch();
   const { filter } = useTypedSelector((state) => state.pokemon);
   return (
     <SearchInput
       value={filter}
-      onChange={(e) => setFilter(e.target.value)}
+      onChange={(e) => dispatch(setFilter(e.target.value))}
       placeholder={placeholder}
     />
   );
