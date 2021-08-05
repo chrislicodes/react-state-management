@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "react";
-import { ActionType } from "../action-types";
+import { ActionType } from "../actions";
 import { Action } from "../actions";
 import { IPokemon } from "../../api";
 
