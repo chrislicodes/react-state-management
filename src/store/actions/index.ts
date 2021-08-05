@@ -1,5 +1,12 @@
-import { ActionType } from "../action-types";
 import { IPokemon } from "../../api";
+
+export enum ActionType {
+  FETCH_POKEMON = "FETCH_POKEMON",
+  FETCH_POKEMON_SUCCESS = "FETCH_POKEMON_SUCCESS",
+  FETCH_POKEMON_ERROR = "FETCH_POKEMON_ERROR",
+  SET_FILTER = "SET_FILTER",
+  SET_SELECTED_POKEMON = "SET_SELECTED_POKEMON",
+}
 
 interface FetchPokemonAction {
   type: ActionType.FETCH_POKEMON;
