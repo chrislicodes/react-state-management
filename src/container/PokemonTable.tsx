@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from "react";
 import styled from "styled-components";
 import PokemonRow from "../components/PokemonRow";
 import { usePokemonStore } from "../store";
+import { fetchPokemon, setSelectedPokemon } from "../store";
 
 const TableHeader = styled.th`
   font-size: 20px;
@@ -9,28 +10,23 @@ const TableHeader = styled.th`
 `;
 
 const PokemonTable: React.FC = () => {
-  const [pokemon, pokemonLength, fetchPokemon, error] = usePokemonStore(
+  const [pokemon, pokemonLength, error, loading, dispatch] = usePokemonStore(
     useCallback((state) => {
       return [
         state.pokemon.filter((pokemon) =>
           pokemon.name.toLowerCase().includes(state.filter.toLowerCase())
         ),
         state.pokemon.length,
-        state.fetchPokemon,
         state.error,
+        state.loading,
+        state.dispatch,
       ];
     }, [])
   );
 
-  const setSelectedPokemon = usePokemonStore(
-    useCallback((state) => {
-      return state.setSelectedPokemon;
-    }, [])
-  );
-
   useEffect(() => {
-    fetchPokemon();
-  }, [fetchPokemon]);
+    fetchPokemon(dispatch);
+  }, [dispatch]);
 
   return (
     <table>
@@ -44,17 +40,17 @@ const PokemonTable: React.FC = () => {
         </tr>
       </thead>
       <tbody>
-        {(pokemon.length &&
+        {(pokemonLength &&
           pokemon.map((pokemon) => (
             <PokemonRow
               key={pokemon.name}
               pokemon={pokemon}
-              onClick={() => setSelectedPokemon(pokemon)}
+              onClick={() => setSelectedPokemon(dispatch, pokemon)}
             />
           ))) || (
           <tr>
             <td>
-              {(!pokemonLength && !error && "Loading ..") ||
+              {(loading && "Loading ..") ||
                 (error && `Something went wrong. :( - ${error}`) ||
                 "No entries found"}
             </td>
