@@ -1,10 +1,7 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { IPokemon } from "./api";
 import PokemonInfo from "./components/PokemonInfo";
 import PokemonFilter from "./components/PokemonFilter";
-import PokemonTable from "./components/PokemonTable";
+import PokemonTable from "./container/PokemonTable";
 
 const Layout = styled.div`
   max-width: 860px;
@@ -32,61 +29,19 @@ const Heading = styled.h1`
 `;
 
 const App: React.FC = () => {
-  const [pokemon, setPokemon] = useState<IPokemon[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredPokemon, setFilteredPokemon] = useState<IPokemon[]>([]);
-
-  const [selectedItem, setSelectedItem] = useState<IPokemon | null>(null);
-
-  useEffect(() => {
-    (async function fetchPokemonData() {
-      try {
-        const pokemonList = await axios.get(
-          "https://pokeapi.co/api/v2/pokemon?limit=500"
-        );
-
-        const fetchURLs = pokemonList.data.results.map(
-          (pokemon: any) => pokemon.url
-        );
-
-        // https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
-        const fullPokemonData: IPokemon[] = await Promise.all(
-          fetchURLs.map(async (url: string) => {
-            const data = await axios.get(url);
-            return data.data;
-          })
-        );
-
-        setPokemon(fullPokemonData);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    const filteredPokemon = [...pokemon].filter((pokemon: IPokemon) =>
-      pokemon.name.includes(searchTerm.toLowerCase())
-    );
-
-    setFilteredPokemon(filteredPokemon);
-  }, [pokemon, searchTerm]);
-
   return (
     <Layout>
       <Header>
         <Heading>Pokemon Search</Heading>
-        <PokemonFilter
-          placeholder="Search for a pokemon name..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        <PokemonFilter placeholder="Search for a pokemon name..." />
       </Header>
       <Content>
         <Left>
-          <PokemonTable pokemon={filteredPokemon} onClick={setSelectedItem} />
+          <PokemonTable />
         </Left>
-        <Right>{selectedItem && <PokemonInfo pokemon={selectedItem} />}</Right>
+        <Right>
+          <PokemonInfo />
+        </Right>
       </Content>
     </Layout>
   );

@@ -1,21 +1,21 @@
-import { IPokemon } from "../api";
+import { usePokemonStore } from "../store";
 
-interface Props {
-  pokemon: IPokemon;
-}
-
-const PokemonInfo: React.FC<Props> = ({ pokemon }) => {
+const PokemonInfo: React.FC = () => {
+  const selectedPokemon = usePokemonStore((state) => state.selectedPokemon);
   return (
-    <>
-      <h1>{pokemon!.name}</h1>
-      <ul>
-        {pokemon.stats.map((stat, i) => (
-          <li key={i}>
-            {stat.stat.name} - {stat.base_stat}
-          </li>
-        ))}
-      </ul>
-    </>
+    (selectedPokemon && (
+      <>
+        <h1>{selectedPokemon!.name}</h1>
+        <ul>
+          {selectedPokemon.stats.map((stat, i) => (
+            <li key={i}>
+              {stat.stat.name} - {stat.base_stat}
+            </li>
+          ))}
+        </ul>
+      </>
+    )) ||
+    null
   );
 };
 

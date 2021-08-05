@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { usePokemonStore } from "../store";
 
 interface Props {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
 }
 
@@ -12,9 +11,17 @@ const SearchInput = styled.input`
   height: 25px;
 `;
 
-const PokemonFilter: React.FC<Props> = ({ value, onChange, placeholder }) => {
+const PokemonFilter: React.FC<Props> = ({ placeholder }) => {
+  const [filter, setFilter] = usePokemonStore((state) => {
+    return [state.filter, state.setFilter];
+  });
+
   return (
-    <SearchInput value={value} onChange={onChange} placeholder={placeholder} />
+    <SearchInput
+      value={filter}
+      onChange={(e) => setFilter(e.target.value)}
+      placeholder={placeholder}
+    />
   );
 };
 
