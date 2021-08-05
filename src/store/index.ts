@@ -3,9 +3,10 @@ import { IPokemon } from "../api";
 import axios from "axios";
 
 interface PokemonStoreData {
-  filter: string;
   pokemon: IPokemon[] | [];
   selectedPokemon: IPokemon | null;
+  filter: string;
+  error: string;
 }
 
 export interface PokemonStoreState extends PokemonStoreData {
@@ -16,9 +17,10 @@ export interface PokemonStoreState extends PokemonStoreData {
 
 export const usePokemonStore = create<PokemonStoreState>(
   (set: SetState<PokemonStoreState>) => ({
-    filter: "",
     pokemon: [],
     selectedPokemon: null,
+    filter: "",
+    error: "",
     fetchPokemon: async (limit = 50) => {
       try {
         const pokemonList = await axios.get(
@@ -36,9 +38,9 @@ export const usePokemonStore = create<PokemonStoreState>(
           })
         );
 
-        set({ pokemon: fullPokemonData });
+        set({ pokemon: fullPokemonData, error: "" });
       } catch (err) {
-        console.log(err);
+        set({ pokemon: [], error: err.message });
       }
     },
     setSelectedPokemon: (pokemon: IPokemon) => {

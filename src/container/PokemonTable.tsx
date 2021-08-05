@@ -9,21 +9,22 @@ const TableHeader = styled.th`
 `;
 
 const PokemonTable: React.FC = () => {
-  const [pokemon, fetchPokemon] = usePokemonStore(
+  const [pokemon, pokemonLength, fetchPokemon, error] = usePokemonStore(
     useCallback((state) => {
-      return [state.pokemon, state.fetchPokemon];
+      return [
+        state.pokemon.filter((pokemon) =>
+          pokemon.name.toLowerCase().includes(state.filter.toLowerCase())
+        ),
+        state.pokemon.length,
+        state.fetchPokemon,
+        state.error,
+      ];
     }, [])
   );
 
   const setSelectedPokemon = usePokemonStore(
     useCallback((state) => {
       return state.setSelectedPokemon;
-    }, [])
-  );
-
-  const filter = usePokemonStore(
-    useCallback((state) => {
-      return state.filter;
     }, [])
   );
 
@@ -44,19 +45,19 @@ const PokemonTable: React.FC = () => {
       </thead>
       <tbody>
         {(pokemon.length &&
-          pokemon
-            .filter((pokemon) =>
-              pokemon.name.toLowerCase().includes(filter.toLowerCase())
-            )
-            .map((pokemon) => (
-              <PokemonRow
-                key={pokemon.name}
-                pokemon={pokemon}
-                onClick={() => setSelectedPokemon(pokemon)}
-              />
-            ))) || (
+          pokemon.map((pokemon) => (
+            <PokemonRow
+              key={pokemon.name}
+              pokemon={pokemon}
+              onClick={() => setSelectedPokemon(pokemon)}
+            />
+          ))) || (
           <tr>
-            <td>Loading..</td>
+            <td>
+              {(!pokemonLength && !error && "Loading ..") ||
+                (error && `Something went wrong. :( - ${error}`) ||
+                "No entries found"}
+            </td>
           </tr>
         )}
       </tbody>
