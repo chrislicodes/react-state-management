@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { usePokemonStore } from "../store";
 import { setFilter } from "../store";
@@ -13,13 +13,16 @@ const SearchInput = styled.input`
 `;
 
 const PokemonFilter: React.FC<Props> = ({ placeholder }) => {
-  const [filter, dispatch] = usePokemonStore((state) => {
-    return [state.filter, state.dispatch];
-  });
+  const [filter, dispatch] = usePokemonStore(
+    useCallback((state) => {
+      return [state.filter, state.dispatch];
+    }, [])
+  );
 
   return (
     <SearchInput
       value={filter}
+      //@ts-ignore
       onChange={(e) => setFilter(dispatch, e.target.value)}
       placeholder={placeholder}
     />

@@ -1,21 +1,9 @@
 import create from "zustand";
-import { devtools } from "zustand/middleware";
-import { pokemonReducer, PokemonStoreData } from "./reducer";
+import { devtools, redux } from "zustand/middleware";
+import { pokemonReducer, initialState } from "./reducer";
 
-const initialState = {
-  pokemon: [],
-  selectedPokemon: null,
-  loading: false,
-  filter: "",
-  error: null,
-};
-
-//types with redux middleware are getting a bit weird - in devtools we dont see the names that way
-export const usePokemonStore = create<PokemonStoreData>(
-  devtools((set) => ({
-    ...initialState,
-    dispatch: (args) => set((state) => pokemonReducer(state, args)),
-  }))
+export const usePokemonStore = create(
+  devtools(redux(pokemonReducer, initialState))
 );
 
 export * from "./action-creator";

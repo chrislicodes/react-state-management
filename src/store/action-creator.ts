@@ -2,7 +2,7 @@ import { ActionType, Action } from "./actions";
 import { IPokemon } from "../api";
 import axios from "axios";
 
-type Dispatch = (args: Action) => void;
+type Dispatch = (action: Action) => void;
 
 export const fetchPokemon = async (dispatch: Dispatch, limit = 50) => {
   dispatch({

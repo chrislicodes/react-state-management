@@ -7,14 +7,16 @@ export interface PokemonStoreData {
   loading: boolean;
   filter: string;
   error: string | null;
-  dispatch: (action: Action) => void;
+  dispatch?: (action: Action) => void; //how to type this better?
 }
 
-export interface PokemonStoreState extends PokemonStoreData {
-  fetchPokemon: () => void;
-  setSelectedPokemon: (pokemon: IPokemon) => void;
-  setFilter: (name: string) => void;
-}
+export const initialState = {
+  pokemon: [],
+  selectedPokemon: null,
+  loading: false,
+  filter: "",
+  error: null,
+};
 
 export const pokemonReducer = (state: PokemonStoreData, action: Action) => {
   switch (action.type) {

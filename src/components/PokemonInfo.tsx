@@ -1,7 +1,10 @@
+import { useCallback } from "react";
 import { usePokemonStore } from "../store";
 
 const PokemonInfo: React.FC = () => {
-  const selectedPokemon = usePokemonStore((state) => state.selectedPokemon);
+  const selectedPokemon = usePokemonStore(
+    useCallback((state) => state.selectedPokemon, [])
+  );
   return (
     (selectedPokemon && (
       <>

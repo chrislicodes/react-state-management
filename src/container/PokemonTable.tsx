@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from "react";
 import styled from "styled-components";
+import { IPokemon } from "../api";
 import PokemonRow from "../components/PokemonRow";
-import { usePokemonStore } from "../store";
-import { fetchPokemon, setSelectedPokemon } from "../store";
+import { usePokemonStore, fetchPokemon, setSelectedPokemon } from "../store";
 
 const TableHeader = styled.th`
   font-size: 20px;
@@ -10,21 +10,23 @@ const TableHeader = styled.th`
 `;
 
 const PokemonTable: React.FC = () => {
-  const [pokemon, pokemonLength, error, loading, dispatch] = usePokemonStore(
-    useCallback((state) => {
-      return [
+  const dispatch = usePokemonStore(useCallback((state) => state.dispatch, []));
+  const [pokemon, pokemonLength, loading, error] = usePokemonStore(
+    useCallback(
+      (state) => [
         state.pokemon.filter((pokemon) =>
           pokemon.name.toLowerCase().includes(state.filter.toLowerCase())
         ),
         state.pokemon.length,
-        state.error,
         state.loading,
-        state.dispatch,
-      ];
-    }, [])
+        state.error,
+      ],
+      []
+    )
   );
 
   useEffect(() => {
+    //@ts-ignore
     fetchPokemon(dispatch);
   }, [dispatch]);
 
@@ -41,10 +43,11 @@ const PokemonTable: React.FC = () => {
       </thead>
       <tbody>
         {(pokemonLength &&
-          pokemon.map((pokemon) => (
+          pokemon.map((pokemon: IPokemon) => (
             <PokemonRow
               key={pokemon.name}
               pokemon={pokemon}
+              //@ts-ignore
               onClick={() => setSelectedPokemon(dispatch, pokemon)}
             />
           ))) || (
