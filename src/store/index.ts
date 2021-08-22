@@ -2,6 +2,7 @@ import create from "zustand";
 import { devtools, redux } from "zustand/middleware";
 import { pokemonReducer, initialState } from "./reducer";
 
+//@ts-ignore
 export const usePokemonStore = create(
   devtools(redux(pokemonReducer, initialState))
 );

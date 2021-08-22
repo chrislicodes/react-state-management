@@ -11,10 +11,11 @@ const TableHeader = styled.th`
 
 const PokemonTable: React.FC = () => {
   const dispatch = usePokemonStore(useCallback((state) => state.dispatch, []));
+
   const [pokemon, pokemonLength, loading, error] = usePokemonStore(
     useCallback(
       (state) => [
-        state.pokemon.filter((pokemon) =>
+        state.pokemon.filter((pokemon: IPokemon) =>
           pokemon.name.toLowerCase().includes(state.filter.toLowerCase())
         ),
         state.pokemon.length,
