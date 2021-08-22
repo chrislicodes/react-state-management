@@ -13,17 +13,16 @@ const SearchInput = styled.input`
 `;
 
 const PokemonFilter: React.FC<Props> = ({ placeholder }) => {
-  const [filter, dispatch] = usePokemonStore(
+  const [filter] = usePokemonStore(
     useCallback((state) => {
-      return [state.filter, state.dispatch];
+      return [state.filter];
     }, [])
   );
 
   return (
     <SearchInput
       value={filter}
-      //@ts-ignore
-      onChange={(e) => setFilter(dispatch, e.target.value)}
+      onChange={(e) => setFilter(e.target.value)}
       placeholder={placeholder}
     />
   );

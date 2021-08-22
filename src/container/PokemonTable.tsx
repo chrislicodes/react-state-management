@@ -10,8 +10,6 @@ const TableHeader = styled.th`
 `;
 
 const PokemonTable: React.FC = () => {
-  const dispatch = usePokemonStore(useCallback((state) => state.dispatch, []));
-
   const [pokemon, pokemonLength, loading, error] = usePokemonStore(
     useCallback(
       (state) => [
@@ -27,9 +25,8 @@ const PokemonTable: React.FC = () => {
   );
 
   useEffect(() => {
-    //@ts-ignore
-    fetchPokemon(dispatch);
-  }, [dispatch]);
+    fetchPokemon();
+  }, []);
 
   return (
     <table>
@@ -48,8 +45,7 @@ const PokemonTable: React.FC = () => {
             <PokemonRow
               key={pokemon.name}
               pokemon={pokemon}
-              //@ts-ignore
-              onClick={() => setSelectedPokemon(dispatch, pokemon)}
+              onClick={() => setSelectedPokemon(pokemon)}
             />
           ))) || (
           <tr>

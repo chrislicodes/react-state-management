@@ -7,7 +7,6 @@ export interface PokemonStoreData {
   loading: boolean;
   filter: string;
   error: string | null;
-  dispatch?: (action: Action) => void; //how to type this better?
 }
 
 export const initialState = {

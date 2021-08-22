@@ -1,10 +1,10 @@
-import { ActionType, Action } from "./actions";
-import { IPokemon } from "../api";
 import axios from "axios";
 
-type Dispatch = (action: Action) => void;
+import { ActionType } from "./actions";
+import { IPokemon } from "../api";
+import { dispatch } from "./";
 
-export const fetchPokemon = async (dispatch: Dispatch, limit = 50) => {
+export const fetchPokemon = async (limit = 50) => {
   dispatch({
     type: ActionType.FETCH_POKEMON,
   });
@@ -37,14 +37,14 @@ export const fetchPokemon = async (dispatch: Dispatch, limit = 50) => {
   }
 };
 
-export const setFilter = (dispatch: Dispatch, name: string) => {
+export const setFilter = (name: string) => {
   dispatch({
     type: ActionType.SET_FILTER,
     payload: name,
   });
 };
 
-export const setSelectedPokemon = (dispatch: Dispatch, pokemon: IPokemon) => {
+export const setSelectedPokemon = (pokemon: IPokemon) => {
   dispatch({
     type: ActionType.SET_SELECTED_POKEMON,
     payload: pokemon,
